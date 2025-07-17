@@ -40,10 +40,6 @@ def wait_for_available_slot_and_click(page):
 def login_and_book():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        context = browser.new_context(user_agent=(
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
-        ), viewport={"width": 1280, "height": 720})
         page = context.new_page()
 
         # Step 1: Login
