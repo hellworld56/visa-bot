@@ -1,13 +1,11 @@
 services:
   - type: web
-    name: playwright-app
-    env: python
-    buildCommand: |
-      pip install -r requirements.txt
-      playwright install chromium
-    startCommand: python app.py
+    name: playwright-webservice
+    env: docker
+    plan: free
+    autoDeploy: true
+    region: oregon
+    dockerfilePath: ./Dockerfile
     envVars:
-      - key: PLAYWRIGHT_BROWSERS_PATH
-        value: 0
-      - key: PORT
-        value: 5000
+      - key: PYTHONUNBUFFERED
+        value: "1"
