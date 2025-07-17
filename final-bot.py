@@ -43,7 +43,12 @@ def login_and_book():
         headless=True,
         args=["--disable-blink-features=AutomationControlled"]
         )
-        context = browser.new_context()
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                       "(KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
+            locale="en-US",
+            viewport={"width": 1280, "height": 720}
+        )
         page = context.new_page()
 
         # Step 1: Login
