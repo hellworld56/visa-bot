@@ -39,7 +39,10 @@ def wait_for_available_slot_and_click(page):
 
 def login_and_book():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(
+        headless=True,
+        args=["--disable-blink-features=AutomationControlled"]
+        )
         context = browser.new_context()
         page = context.new_page()
 
@@ -57,7 +60,7 @@ def login_and_book():
 
         try:
             print("Waiting for country selection...")
-
+            
             target_p = page.locator("p.whitespace-nowrap", has_text="United Kingdom")
             target_p.wait_for(state="visible", timeout=15000)
             clickable_card = target_p.locator("..").locator("..")
