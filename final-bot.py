@@ -39,17 +39,32 @@ def wait_for_available_slot_and_click(page):
 
 def login_and_book():
     with sync_playwright() as p:
+        
+
         browser = p.chromium.launch(
-        headless=True,
-        args=["--disable-blink-features=AutomationControlled"]
+            headless=True,
+            args=[
+                '--disable-dev-shm-usage',
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-gpu',
+                '--disable-infobars',
+                '--disable-extensions',
+                '--window-size=1280,720'
+            ]
         )
+
         context = browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                        "(KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
-            locale="en-US",
             viewport={"width": 1280, "height": 720}
         )
+
         page = context.new_page()
+        page.goto("https://www.whatsmyua.info/")  # check spoofed UA
+        print(page.title())
+        context.close()
+        browser.close()
 
         # Step 1: Login
         page.goto(
