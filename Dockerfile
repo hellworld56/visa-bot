@@ -14,4 +14,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 10000
 
 # Start your app (adjust if needed)
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "bot-server:app"]
+
+CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "bot-server:app"]
