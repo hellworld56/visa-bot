@@ -1,5 +1,7 @@
 from playwright.sync_api import sync_playwright
 import time
+import os
+import sys
 
 
 def wait_for_available_slot_and_click(page):
@@ -38,9 +40,17 @@ def wait_for_available_slot_and_click(page):
 
 
 def login_and_book():
+    email = os.getenv("BOT_EMAIL")
+    password = os.getenv("BOT_PASSWORD")
+    country = os.getenv("BOT_COUNTRY")
+
+    if not email or not password or not country:
+        print("❌ Missing EMAIL, PASSWORD or COUNTRY environment variable.")
+        sys.exit(1)
+
     with sync_playwright() as p:
         print("'top")
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=False)
         context = browser.new_context(
             ignore_https_errors=True,
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -56,20 +66,20 @@ def login_and_book():
             "client_id=tlscitizen&redirect_uri=https%3A%2F%2Fvisas-de.tlscontact.com%2Fen-us%2Fauth-callback"
             "&response_mode=query&response_type=code&scope=openid"
         )
-        page.fill("input[name='username']", "muhammadanas1586@gmail.com")
-        page.fill("input[name='password']", "Anas@9090")
+        page.fill("input[name='username']", email)
+        page.fill("input[name='password']", password)
         page.click("button:has-text('Login')")
         page.wait_for_load_state("networkidle")
         print("Logged in")
 
         try:
             print("Waiting for country selection...")
-            
-            target_p = page.locator("p.whitespace-nowrap", has_text="United Kingdom")
+
+            target_p = page.locator("p.whitespace-nowrap", has_text=country)
             target_p.wait_for(state="visible", timeout=15000)
             clickable_card = target_p.locator("..").locator("..")
             clickable_card.click()
-            print("Clicked card containing 'United Kingdom'")
+            print(f"Clicked card containing '{country}'")
             page.wait_for_timeout(3000)
         except Exception as e:
             print("Failed to click country card:", e)
@@ -81,7 +91,7 @@ def login_and_book():
         page.wait_for_load_state("networkidle")
 
         # Optional: Try clicking "Continue" link if it appears
-        for _ in range(5):  # Retry 5 times
+        for _ in range(5):
             try:
                 continue_btn = page.locator("a:has-text('Continue')")
                 if continue_btn.count() > 0 and continue_btn.first.is_visible():
@@ -113,7 +123,7 @@ def login_and_book():
         except Exception as e:
             print("Could not click 'Book your appointment':", e)
 
-        # Step 5: Detect booking confirmation (redirect or success message)
+        # Step 5: Detect booking confirmation
         print("Waiting for final confirmation or redirects...")
         time.sleep(5)
 
