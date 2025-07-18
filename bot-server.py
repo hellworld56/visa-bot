@@ -17,10 +17,11 @@ def start_bot():
         try:
             print("🚀 Starting bot...")
             sys.stdout.flush()
+            # Start final-bot.py with unbuffered output (-u)
             bot_process = subprocess.Popen(
-                ["python3", "final-bot.py"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
+                ["python3", "-u", "final-bot.py"],  # -u = unbuffered stdout/stderr
+                stdout=sys.stdout,
+                stderr=sys.stderr
             )
             return "✅ Bot started"
         except Exception as e:
@@ -40,7 +41,9 @@ def stop_bot():
     return "ℹ️ No bot is running"
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Render uses this env var
+    # Set PYTHONUNBUFFERED so Flask's own prints are also unbuffered
+    os.environ["PYTHONUNBUFFERED"] = "1"
+    port = int(os.environ.get('PORT', 5000))
     print(f"🔧 Starting Flask server on port {port}")
     sys.stdout.flush()
     app.run(debug=True, host='0.0.0.0', port=port)
