@@ -39,6 +39,7 @@ def wait_for_available_slot_and_click(page):
 
 def login_and_book():
     with sync_playwright() as p:
+        print("'top")
         browser = p.chromium.launch(headless=True)
         context = browser.new_context(
             ignore_https_errors=True,
@@ -47,7 +48,7 @@ def login_and_book():
             viewport={"width": 1280, "height": 720}
         )
         page = context.new_page()
-        page.goto("https://www.whatsmyua.info/")
+        print("'I am here")
 
         # Step 1: Login
         page.goto(
