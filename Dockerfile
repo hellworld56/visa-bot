@@ -15,4 +15,4 @@ EXPOSE 8000
 
 # Start your app (adjust if needed)
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "bot-server:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--log-level=info", "--access-logfile=-", "--error-logfile=-", "bot-server:app"]
