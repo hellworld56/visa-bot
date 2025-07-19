@@ -7,12 +7,14 @@
   <style>
     body { background-color: #f4f4f4; }
     .card { margin-top: 60px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .status-box { margin-top: 15px; }
   </style>
 </head>
 <body>
   <div class="container d-flex justify-content-center">
     <div class="card p-4" style="width: 400px;">
       <h3 class="text-center text-primary mb-3">TLS Appointment Bot</h3>
+
       <form method="POST" action="/start-bot">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
@@ -29,11 +31,48 @@
         <div class="d-flex justify-content-between">
           <button type="submit" class="btn btn-success">Start</button>
       </form>
+
       <form method="POST" action="/stop-bot">
-          <button type="submit" class="btn btn-danger">Stop</button>
+        <button type="submit" class="btn btn-danger">Stop</button>
       </form>
-        </div>
+      </div>
+
+      <!-- Bot Status -->
+      <div id="statusBox" class="alert status-box mt-3 alert-secondary">
+        <strong>Status:</strong> <span id="statusMessage">Loading...</span>
+      </div>
     </div>
   </div>
+
+  <script>
+    async function updateStatus() {
+      try {
+        const res = await fetch('/status');
+        const data = await res.json();
+
+        const statusBox = document.getElementById('statusBox');
+        const statusMessage = document.getElementById('statusMessage');
+
+        statusMessage.textContent = data.message;
+
+        if (data.running) {
+          statusBox.classList.remove('alert-secondary', 'alert-danger');
+          statusBox.classList.add('alert-success');
+        } else {
+          statusBox.classList.remove('alert-success');
+          statusBox.classList.add('alert-secondary');
+        }
+      } catch (err) {
+        console.error('Failed to update bot status:', err);
+        const statusBox = document.getElementById('statusBox');
+        statusBox.classList.remove('alert-success');
+        statusBox.classList.add('alert-danger');
+        document.getElementById('statusMessage').textContent = "Error fetching status";
+      }
+    }
+
+    setInterval(updateStatus, 2000); // refresh every 2 seconds
+    updateStatus(); // initial load
+  </script>
 </body>
 </html>
