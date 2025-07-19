@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import subprocess
 import os
+import sys
 
 app = Flask(__name__)
 bot_process = None
@@ -32,8 +33,8 @@ def start_bot():
         bot_process = subprocess.Popen(
             ["python3", "-u", "final-bot.py"],
             env=env,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
+            stdout=sys.stdout,
+            stderr=sys.stderr
         )
         return redirect(url_for("index"))
     except Exception as e:
