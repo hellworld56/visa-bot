@@ -50,7 +50,7 @@ def login_and_book():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-        headless=False,
+        headless=True,
         proxy={
             "server": "http://p.webshare.io:80",
             "username": "ypiyakrm-rotate",
