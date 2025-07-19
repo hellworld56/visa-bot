@@ -49,16 +49,32 @@ def login_and_book():
         sys.exit(1)
 
     with sync_playwright() as p:
-        print("'top")
-        browser = p.chromium.launch(headless=True)
-        context = browser.new_context(
-            ignore_https_errors=True,
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                       "(KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
-            viewport={"width": 1280, "height": 720}
+        browser = p.chromium.launch(
+        headless=False,
+        proxy={
+            "server": "http://p.webshare.io:80",
+            "username": "ypiyakrm-rotate",
+            "password": "dcy6mlaz0rhi"
+        }
         )
+
+        context = browser.new_context(
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+            ),
+            viewport={"width": 1280, "height": 720},
+            java_script_enabled=True,
+            ignore_https_errors=True,
+        )
+
+        context.set_extra_http_headers({
+            "Accept-Language": "en-US,en;q=0.9",
+            "DNT": "1",
+            "Upgrade-Insecure-Requests": "1"
+        })
+
         page = context.new_page()
-        print("'I am here")
 
         # Step 1: Login
         page.goto(
