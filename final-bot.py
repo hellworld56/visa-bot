@@ -85,10 +85,24 @@ def login_and_book():
             print("Failed to click country card:", e)
 
         # Step 2: Click "Select"
-        select_btn = page.locator("button:has-text('Select')").nth(1)
-        select_btn.wait_for(state="visible", timeout=10000)
-        select_btn.click()
-        page.wait_for_load_state("networkidle")
+        # select_btn = page.locator("button:has-text('Select')").nth(1)
+        # select_btn.wait_for(state="visible", timeout=10000)
+        # select_btn.click()
+        # page.wait_for_load_state("networkidle")
+        try:
+            select_btn = page.locator("button:has-text('Select')").nth(1)
+            select_btn.wait_for(state="visible", timeout=10000)
+            select_btn.click()
+            page.wait_for_load_state("networkidle")
+            print("Select button clicked successfully")
+
+        except TimeoutError:
+            print("❌ Error: 'Select' button not found or not clickable in time")
+            sys.exit(1)
+
+        except Exception as e:
+            print(f"❌ Unexpected error during Select button click: {e}")
+            sys.exit(1)
 
         # Optional: Try clicking "Continue" link if it appears
         for _ in range(5):
