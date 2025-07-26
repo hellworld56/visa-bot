@@ -52,9 +52,9 @@ def login_and_book():
         browser = p.chromium.launch(
         headless=True,
         proxy={
-            "server": "http://p.webshare.io:80",
-            "username": "ypiyakrm-rotate",
-            "password": "dcy6mlaz0rhi"
+            "server": "http://eu.decodo.com:10000",
+            "username": "spkm1bz91s",
+            "password": "ybkhaU9Bn+3g1ns4KP"
         }
         )
 
