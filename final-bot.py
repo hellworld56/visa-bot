@@ -114,10 +114,14 @@ def login_and_book():
 
         except TimeoutError:
             print("❌ Error: 'Select' button not found or not clickable in time")
+            page_text = page.inner_text("body")
+            print("📄 Page Text:\n", page_text)
             sys.exit(1)
 
         except Exception as e:
             print(f"❌ Unexpected error during Select button click: {e}")
+            page_text = page.inner_text("body")
+            print("📄 Page Text:\n", page_text)
             sys.exit(1)
 
         # Optional: Try clicking "Continue" link if it appears
