@@ -50,7 +50,7 @@
 
 #     with sync_playwright() as p:
 #         browser = p.chromium.launch(
-#         headless=True,
+#         headless=False,
 #         proxy={
 #             "server": "http://eu.decodo.com:10000",
 #             "username": "spkm1bz91s",
